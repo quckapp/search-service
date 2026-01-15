@@ -1,4 +1,4 @@
-module github.com/quckchat/search-service
+module github.com/quckapp/search-service
 
 go 1.21
 

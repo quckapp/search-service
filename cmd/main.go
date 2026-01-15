@@ -97,7 +97,7 @@ func globalSearch(c *gin.Context) {
 		"size": 50,
 	}
 
-	results, err := executeSearch("quckchat_*", searchQuery)
+	results, err := executeSearch("quckapp_*", searchQuery)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -136,7 +136,7 @@ func searchMessages(c *gin.Context) {
 		)
 	}
 
-	results, err := executeSearch("quckchat_messages", searchQuery)
+	results, err := executeSearch("quckapp_messages", searchQuery)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -168,7 +168,7 @@ func searchFiles(c *gin.Context) {
 		}
 	}
 
-	results, err := executeSearch("quckchat_files", searchQuery)
+	results, err := executeSearch("quckapp_files", searchQuery)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -190,7 +190,7 @@ func searchUsers(c *gin.Context) {
 		"size": 20,
 	}
 
-	results, err := executeSearch("quckchat_users", searchQuery)
+	results, err := executeSearch("quckapp_users", searchQuery)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -219,7 +219,7 @@ func searchChannels(c *gin.Context) {
 		"size": 20,
 	}
 
-	results, err := executeSearch("quckchat_channels", searchQuery)
+	results, err := executeSearch("quckapp_channels", searchQuery)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -234,7 +234,7 @@ func indexMessage(c *gin.Context) {
 		return
 	}
 
-	if err := indexDocument("quckchat_messages", doc["id"].(string), doc); err != nil {
+	if err := indexDocument("quckapp_messages", doc["id"].(string), doc); err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
@@ -248,7 +248,7 @@ func indexFile(c *gin.Context) {
 		return
 	}
 
-	if err := indexDocument("quckchat_files", doc["id"].(string), doc); err != nil {
+	if err := indexDocument("quckapp_files", doc["id"].(string), doc); err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
@@ -259,7 +259,7 @@ func deleteFromIndex(c *gin.Context) {
 	indexType := c.Param("type")
 	id := c.Param("id")
 
-	index := "quckchat_" + indexType
+	index := "quckapp_" + indexType
 	if es != nil {
 		es.Delete(index, id)
 	}
