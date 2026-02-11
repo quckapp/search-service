@@ -47,6 +47,7 @@ func main() {
 	alertService := service.NewAlertService(redisClient, logger)
 	spellCheckService := service.NewSpellCheckService(esClient, logger)
 	searchScopeService := service.NewSearchScopeService(redisClient, logger)
+	extended2Service := service.NewExtended2Service(redisClient, logger)
 
 	// -- Initialize Handlers --
 	searchHandler := handler.NewSearchHandler(searchService, logger)
@@ -61,6 +62,7 @@ func main() {
 	alertHandler := handler.NewAlertHandler(alertService, logger)
 	spellCheckHandler := handler.NewSpellCheckHandler(spellCheckService, logger)
 	searchScopeHandler := handler.NewSearchScopeHandler(searchScopeService, logger)
+	ext2Handler := handler.NewExtended2Handler(extended2Service, logger)
 
 	// Setup router
 	router := api.NewRouter(
@@ -76,6 +78,7 @@ func main() {
 		alertHandler,
 		spellCheckHandler,
 		searchScopeHandler,
+		ext2Handler,
 		cfg,
 		logger,
 	)

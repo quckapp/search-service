@@ -22,6 +22,7 @@ func NewRouter(
 	alertHandler *handler.AlertHandler,
 	spellCheckHandler *handler.SpellCheckHandler,
 	searchScopeHandler *handler.SearchScopeHandler,
+	ext2Handler *handler.Extended2Handler,
 	cfg *config.Config,
 	logger *logrus.Logger,
 ) *gin.Engine {
@@ -141,6 +142,54 @@ func NewRouter(
 		api.POST("/search/scope", searchScopeHandler.SetScope)
 		api.GET("/search/scope", searchScopeHandler.GetScope)
 		api.GET("/search/scopes", searchScopeHandler.ListAvailableScopes)
+
+		// -- Search Templates --
+		api.POST("/search/templates", ext2Handler.CreateTemplate)
+		api.GET("/search/templates", ext2Handler.ListTemplates)
+		api.GET("/search/templates/:id", ext2Handler.GetTemplate)
+		api.PUT("/search/templates/:id", ext2Handler.UpdateTemplate)
+		api.DELETE("/search/templates/:id", ext2Handler.DeleteTemplate)
+		api.POST("/search/templates/:id/use", ext2Handler.UseTemplate)
+
+		// -- Search Result Bookmarks --
+		api.POST("/search/result-bookmarks", ext2Handler.BookmarkResult)
+		api.GET("/search/result-bookmarks", ext2Handler.ListBookmarks)
+		api.DELETE("/search/result-bookmarks/:id", ext2Handler.DeleteBookmark)
+
+		// -- Search Feedback --
+		api.POST("/search/feedback", ext2Handler.SubmitFeedback)
+		api.GET("/search/feedback", ext2Handler.ListFeedback)
+		api.GET("/search/feedback/stats", ext2Handler.GetFeedbackStats)
+
+		// -- A/B Tests --
+		api.POST("/search/ab-tests", ext2Handler.CreateABTest)
+		api.GET("/search/ab-tests", ext2Handler.ListABTests)
+		api.GET("/search/ab-tests/:id", ext2Handler.GetABTest)
+		api.DELETE("/search/ab-tests/:id", ext2Handler.DeleteABTest)
+
+		// -- Search Pipelines --
+		api.POST("/search/pipelines", ext2Handler.CreatePipeline)
+		api.GET("/search/pipelines", ext2Handler.ListPipelines)
+		api.GET("/search/pipelines/:id", ext2Handler.GetPipeline)
+		api.PUT("/search/pipelines/:id", ext2Handler.UpdatePipeline)
+		api.DELETE("/search/pipelines/:id", ext2Handler.DeletePipeline)
+
+		// -- Stop Words --
+		api.POST("/stop-words", ext2Handler.AddStopWord)
+		api.GET("/stop-words", ext2Handler.ListStopWords)
+		api.DELETE("/stop-words/:id", ext2Handler.DeleteStopWord)
+
+		// -- Query Rewrites --
+		api.POST("/query-rewrites", ext2Handler.CreateRewrite)
+		api.GET("/query-rewrites", ext2Handler.ListRewrites)
+		api.PUT("/query-rewrites/:id", ext2Handler.UpdateRewrite)
+		api.DELETE("/query-rewrites/:id", ext2Handler.DeleteRewrite)
+
+		// -- Index Schedules --
+		api.POST("/index-schedules", ext2Handler.CreateSchedule)
+		api.GET("/index-schedules", ext2Handler.ListSchedules)
+		api.PUT("/index-schedules/:id", ext2Handler.UpdateSchedule)
+		api.DELETE("/index-schedules/:id", ext2Handler.DeleteSchedule)
 	}
 
 	return r
