@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"net/http"
 	"os"
@@ -9,6 +10,8 @@ import (
 	"syscall"
 	"time"
 
+	_ "github.com/go-sql-driver/mysql"
+	promotiongate "github.com/quckapp/promotion-gate-go"
 	"github.com/sirupsen/logrus"
 
 	"github.com/quckapp/search-service/internal/api"
@@ -82,6 +85,22 @@ func main() {
 		cfg,
 		logger,
 	)
+
+	// Promotion gate (uses dedicated MySQL connection)
+	if promoDSN := os.Getenv("PROMOTION_DB_URL"); promoDSN != "" {
+		promoDB, err := sql.Open("mysql", promoDSN)
+		if err != nil {
+			logger.Warnf("Failed to connect promotion DB: %v", err)
+		} else {
+			promoStore := promotiongate.NewSQLStore(promoDB, "")
+			if err := promoStore.Migrate(context.Background()); err != nil {
+				logger.Warnf("Failed to migrate promotion tables: %v", err)
+			}
+			promoHandler := promotiongate.NewHandler(promoStore, "search-service", os.Getenv("ENVIRONMENT"))
+			promoHandler.RegisterRoutes(router.Group("/api/v1"))
+			logger.Info("Promotion gate enabled")
+		}
+	}
 
 	// Start server
 	srv := &http.Server{

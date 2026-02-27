@@ -5,7 +5,10 @@ go 1.21
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.11.1
 	github.com/gin-gonic/gin v1.9.1
+	github.com/go-sql-driver/mysql v1.7.1
+	github.com/google/uuid v1.5.0
 	github.com/joho/godotenv v1.5.1
+	github.com/quckapp/promotion-gate-go v0.0.0
 	github.com/sirupsen/logrus v1.9.4
 )
 
