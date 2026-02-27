@@ -192,5 +192,12 @@ func NewRouter(
 		api.DELETE("/index-schedules/:id", ext2Handler.DeleteSchedule)
 	}
 
+	// TODO: promotion-gate requires SQL or MongoDB store
+	// Once search-service has a suitable database connection, initialize:
+	// promoStore := promotiongate.NewSQLStore(db, "")
+	// promoStore.Migrate(context.Background())
+	// promoHandler := promotiongate.NewHandler(promoStore, "search-service", os.Getenv("ENVIRONMENT"))
+	// promoHandler.RegisterRoutes(api)
+
 	return r
 }
